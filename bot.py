@@ -8,10 +8,11 @@ from io import BytesIO
 
 import matplotlib
 import matplotlib.pyplot as plt
+plt.switch_backend('agg')
 import logging
 from fuzzywuzzy import process
 import argparse
-
+import numpy as np
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -203,7 +204,8 @@ def _create_plot(df, x, y):
     """Return fig, ax with plot from Dataframe"""
     logger.info("Creating plot for scalar %s" % y)
     fig, axs = plt.subplots(1, 1)
-    axs.plot(df[x], df[y])
+    x_ord = np.argsort(df[x])
+    axs.plot(df[x][x_ord], df[y][x_ord])
     axs.set_xlabel(x)
     axs.set_ylabel(y)
     return fig, axs
